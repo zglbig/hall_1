@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zgl.dao.mapper.IDBGeneralizeDao">
+    <resultMap id="adminMap" type="org.zgl.dao.entity.DBGeneralize">
+        <id column="id" property="id"/>
+        <result column="num" property="number"/>
+        <result column="self_uid" property="selfUid"/>
+        <result column="target_uid" property="targetUid"/>
+        <result column="award" property="award"/>
+        <result column="all_award" property="allAward"/>
+        <result column="target_user_name" property="targetUserName"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <insert id="insertDBGeneralize" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into db_generalize(num,self_uid,target_uid,target_user_name,award,all_award,create_time)
+       values (#{number},#{selfUid},#{targetUid},#{targetUserName},#{award},#{allAward},#{createTime});
+    </insert>
+    <update id="updateDBGeneralize" parameterType="org.zgl.dao.entity.DBGeneralize">
+        update db_generalize
+        <set>
+            <if test="number != null">num = #{number},</if>
+            <if test="selfUid != null">self_uid = #{selfUid},</if>
+            <if test="targetUid != null">target_uid = #{targetUid},</if>
+            <if test="award != null">award=#{award},</if>
+            <if test="allAward != null">all_award=#{allAward},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="targetUserName != null">target_user_name = #{targetUserName}</if>
+        </set>
+        where self_uid=#{selfUid}
+    </update>
+    <update id="updateDBGeneralizeByTargetUid" parameterType="org.zgl.dao.entity.DBGeneralize">
+        update db_generalize
+        <set>
+            <if test="number != null">num = #{number},</if>
+            <if test="selfUid != null">self_uid = #{selfUid},</if>
+            <if test="targetUid != null">target_uid = #{targetUid},</if>
+            <if test="award != null">award=#{award},</if>
+            <if test="allAward != null">all_award=#{allAward},</if>
+            <if test="targetUserName != null">target_user_name = #{targetUserName},</if>
+            <if test="createTime != null">create_time = #{createTime}</if>
+        </set>
+        where target_uid=#{targetUid}
+    </update>
+    <select id="queryDBGeneralizeByUid" resultMap="adminMap">
+        select id,num,self_uid,target_uid,target_user_name,all_award,award,create_time
+        from db_generalize
+        where self_uid=#{selfUid};
+    </select>
+    <select id="queryDBGeneralizeByTargetUid" resultMap="adminMap">
+        select id,num,self_uid,target_uid,target_user_name,all_award,award,create_time
+        from db_generalize
+        where target_uid=#{targetUid};
+    </select>
+    <delete id="deleteDBGeneralizeByUid">
+        delete from db_generalize where self_uid=#{selfUid}
+    </delete>
+</mapper>

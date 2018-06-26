@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zgl.dao.mapper.IDBBankDao">
+    <resultMap id="bankMap" type="org.zgl.dao.entity.DBBank">
+        <id column="id" property="id"/>
+        <result column="uid" property="uid"/>
+        <result column="gold" property="gold"/>
+    </resultMap>
+    <select id="queryDBBankByUid" resultMap="bankMap">
+        select id,uid,gold from db_bank where uid=#{uid}
+    </select>
+    <insert id="insertDBBank" parameterType="org.zgl.dao.entity.DBBank">
+        insert into db_bank(id,uid,gold) values (#{id},#{uid},#{gold})
+    </insert>
+    <update id="updateDBBank" parameterType="org.zgl.dao.entity.DBBank">
+        update db_bank
+        <set>
+            <if test="gold != null">gold=#{gold}</if>
+        </set>
+        where
+        uid=#{uid}
+    </update>
+</mapper>

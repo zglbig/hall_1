@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zgl.dao.mapper.IDBAdminDao">
+    <resultMap id="adminMap" type="org.zgl.dao.entity.DBAdmininfo">
+        <id column="id" property="id"/>
+        <result column="timer" property="timer"/>
+        <result column="top_up" property="topUp"/>
+        <result column="online" property="online"/>
+        <result column="regist_num" property="registNum"/>
+        <result column="regist_uid" property="registUid"/>
+        <result column="system_weath" property="systemWeath"/>
+    </resultMap>
+    <insert id="insertDBAdmin" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into db_admininfo(timer,top_up,online,regist_num,regist_uid,system_weath)
+       values (#{timer},#{topUp},#{online},#{registNum},#{registUid},#{systemWeath});
+    </insert>
+    <update id="updateDBAdmin" parameterType="org.zgl.dao.entity.DBUser">
+        update db_admininfo
+        <set>
+            <if test="timer != null">timer = #{timer},</if>
+            <if test="topUp != null">top_up = #{topUp},</if>
+            <if test="online != null">online = #{online},</if>
+            <if test="registNum != null">regist_num = #{registNum},</if>
+            <if test="registUid != null">regist_uid = #{registUid},</if>
+            <if test="systemWeath != null">system_weath = #{systemWeath},</if>
+        </set>
+        where id=#{id}
+    </update>
+    <select id="queryDBAdminBy" resultMap="adminMap">
+        select id,timer,top_up,online,regist_num,regist_uid,system_weath
+        from db_admininfo
+        where id=(select max(id) from db_admininfo);
+--         where id=(SELECT MAX(id) FROM db_adminInfo
+    </select>
+    <delete id="deleteDBAdmin">
+        delete from db_admininfo where uid=#{uid}
+    </delete>
+</mapper>
