@@ -19,13 +19,14 @@ public class BuilderAll {
             LoggerUtils.getPlatformLog().error(e);
         }
         PATH_CNF.setScanPath(pros.getProperty("scanPath"));
-        PATH_CNF.setCsPath(pros.getProperty("csPath"));
+        PATH_CNF.setDtoCsPath(pros.getProperty("dtoCsPath"));
         PATH_CNF.setCommandCodePath(pros.getProperty("commandCodePath"));
         PATH_CNF.setOperateCommandRecivePath(pros.getProperty("operateCommandRecivePath"));
         PATH_CNF.setErrorCodeExcelPath(pros.getProperty("errorCodeExcelPath"));
         PATH_CNF.setOperateCommandRecivePackage(pros.getProperty("operateCommandRecivePackage"));
         PATH_CNF.setOperateCommandAbstractPackage(pros.getProperty("operateCommandAbstractPackage"));
         PATH_CNF.setCommandCodePackage(pros.getProperty("commandCodePackage"));
+        PATH_CNF.setDatableCsBuildPath(pros.getProperty("datableCsBuildPath"));
     }
 
     public static void main(String[] args) {
@@ -35,7 +36,7 @@ public class BuilderAll {
         System.err.println("--------------通讯协议类生成完成-------------------");
         BuilderExcelInversion.builder(PATH_CNF.getScanPath());
         System.err.println("--------------创建excel表完成----------------------");
-        BuilderExcel.builder("excel");
+        BuilderExcel.builder(PATH_CNF.getScanPath());
         System.err.println("--------------excel表对应的类生成完成--------------");
     }
 }

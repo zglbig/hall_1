@@ -4,7 +4,7 @@ public class PathCnf {
     /**扫描路劲*/
     private String scanPath;
     /**cs生成路劲*/
-    private String csPath;
+    private String dtoCsPath;
     private String commandCodePath;
     private String operateCommandRecivePath;
     private String errorCodeExcelPath;
@@ -13,6 +13,7 @@ public class PathCnf {
     /**OperateCommandAbstract 的包路劲*/
     private String operateCommandAbstractPackage;
     private String commandCodePackage;
+    private String datableCsBuildPath;//导表类生成路径
     public String getScanPath() {
         return scanPath;
     }
@@ -29,12 +30,12 @@ public class PathCnf {
         this.scanPath = scanPath;
     }
 
-    public String getCsPath() {
-        return csPath;
+    public String getDtoCsPath() {
+        return dtoCsPath;
     }
 
-    public void setCsPath(String csPath) {
-        this.csPath = csPath;
+    public void setDtoCsPath(String dtoCsPath) {
+        this.dtoCsPath = dtoCsPath;
     }
 
     public String getCommandCodePath() {
@@ -75,5 +76,13 @@ public class PathCnf {
 
     public void setOperateCommandAbstractPackage(String operateCommandAbstractPackage) {
         this.operateCommandAbstractPackage = operateCommandAbstractPackage;
+    }
+
+    public String getDatableCsBuildPath() {
+        return datableCsBuildPath;
+    }
+
+    public void setDatableCsBuildPath(String datableCsBuildPath) {
+        this.datableCsBuildPath = datableCsBuildPath;
     }
 }

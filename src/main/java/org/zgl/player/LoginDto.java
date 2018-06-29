@@ -2,7 +2,6 @@ package org.zgl.player;
 
 
 import org.zgl.logic.hall.giftBag.po.SQLGiftBagModel;
-import org.zgl.logic.hall.onlineAward.OnlineAwardTimerDataTable;
 import org.zgl.logic.hall.siginin.po.SQLSignInModel;
 import org.zgl.logic.hall.weath.po.SQLWeathModel;
 import org.zgl.logic.login.po.SQLUserBaseInfo;
@@ -26,6 +25,7 @@ public class LoginDto {
     private String gender;
     private String relation;
     private String desc;
+    private boolean hasDialAward;
     /**成长礼包*/
     private int giftBagDay;
     /**当天是否已经领取*/
@@ -34,9 +34,10 @@ public class LoginDto {
     private int signInDay;
     /**今天是否签到*/
     private boolean hasSignIn;
+    private int dialNum;
     /**距离下次在线奖励可以领取的时间*/
-    private int onlineAwardTime;
-    private int onlineAwardCount;//这次是第几次领取
+//    private int onlineAwardTime;
+//    private int onlineAwardCount;//这次是第几次领取
     /**是否已经购买摇钱树 等级大于0已经购买*/
     private int moneyTreeLv;
     /**当前使用座驾*/
@@ -48,6 +49,14 @@ public class LoginDto {
     /**是否又推广id*/
     private boolean hasGeneralizeId;
     public LoginDto() {
+    }
+
+    public boolean isHasDialAward() {
+        return hasDialAward;
+    }
+
+    public void setHasDialAward(boolean hasDialAward) {
+        this.hasDialAward = hasDialAward;
     }
 
     public boolean isHasGeneralizeId() {
@@ -72,6 +81,14 @@ public class LoginDto {
 
     public void setRelation(String relation) {
         this.relation = relation;
+    }
+
+    public int getDialNum() {
+        return dialNum;
+    }
+
+    public void setDialNum(int dialNum) {
+        this.dialNum = dialNum;
     }
 
     public String getDesc() {
@@ -242,21 +259,21 @@ public class LoginDto {
         this.vipExp = vipExp;
     }
 
-    public int getOnlineAwardCount() {
-        return onlineAwardCount;
-    }
-
-    public void setOnlineAwardCount(int onlineAwardCount) {
-        this.onlineAwardCount = onlineAwardCount;
-    }
-
-    public int getOnlineAwardTime() {
-        return onlineAwardTime;
-    }
-
-    public void setOnlineAwardTime(int onlineAwardTime) {
-        this.onlineAwardTime = onlineAwardTime;
-    }
+//    public int getOnlineAwardCount() {
+//        return onlineAwardCount;
+//    }
+//
+//    public void setOnlineAwardCount(int onlineAwardCount) {
+//        this.onlineAwardCount = onlineAwardCount;
+//    }
+//
+//    public int getOnlineAwardTime() {
+//        return onlineAwardTime;
+//    }
+//
+//    public void setOnlineAwardTime(int onlineAwardTime) {
+//        this.onlineAwardTime = onlineAwardTime;
+//    }
 
     public LoginDto getLoginDto(UserMap u){
         this.id =u.getId();
@@ -279,23 +296,16 @@ public class LoginDto {
         SQLSignInModel signIn = u.getSignIn();
         this.signInDay = signIn.getSignDay();
         this.hasSignIn = (signIn.getSignInTime() == DateUtils.currentDay());
-        //-------------------------------------在线奖励时间间隔-------------------------------------
-        int onlineTimer = (int) ((System.currentTimeMillis() - signIn.getOnlineAwardTimer())/1000);//距离多少秒
-        if(signIn.getOnlineAwardDay() != DateUtils.currentDay()) {
-            signIn.setOnlineAwardNum(0);
-            signIn.setOnlineAwardDay(DateUtils.currentDay());
-        }
-        this.onlineAwardCount = signIn.getOnlineAwardNum();
-        OnlineAwardTimerDataTable onlineAwardTimerDataTable = OnlineAwardTimerDataTable.get(onlineAwardCount);
-        if(onlineAwardTimerDataTable == null){
-            onlineTimer = 0;
-        }else{
-            int temp = onlineAwardTimerDataTable.getTimer() - onlineTimer;
-            onlineTimer = temp > 0 ? temp:0;
-        }
-        this.onlineAwardTime = onlineTimer;
-        //-------------------------------------在线奖励时间间隔-------------------------------------
+        this.hasDialAward = signIn.getDialTime() == DateUtils.currentDay();
+
         SQLWeathModel weath = u.getWeath();
+        //-------------------------------------在线奖励时间间隔-------------------------------------
+        if(signIn.getDialTime() != DateUtils.currentDay()){
+            signIn.setDialTime(DateUtils.currentDay());
+            signIn.setDialNum(1 + weath.getVipLv());
+        }
+        this.dialNum = signIn.getDialNum();
+        //-------------------------------------在线奖励时间间隔-------------------------------------
         this.hasGeneralizeId = weath.isHasGeneralizeId();
         this.moneyTreeLv = weath.getMoneyTree().getLv();
         this.gold =weath.getGold();

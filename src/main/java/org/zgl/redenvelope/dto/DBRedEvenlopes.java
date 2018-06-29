@@ -1,4 +1,4 @@
-package org.zgl.dao.entity;
+package org.zgl.redenvelope.dto;
 
 import java.sql.Date;
 
@@ -14,14 +14,14 @@ public class DBRedEvenlopes {
     private String userName;
     private Integer vipLv;
     private Integer redEvenlopesType;
-    private Long targetUid;
     private Integer hasGet;
     private String givePlayer;
     private Integer num;
     private Integer numed;
     private String explain;
     private Integer residueGold;
-    private Date createTime;
+    private long createTime;
+    private long lastEditTime;
 
     public Integer getId() {
         return id;
@@ -87,14 +87,6 @@ public class DBRedEvenlopes {
         this.redEvenlopesType = redEvenlopesType;
     }
 
-    public Long getTargetUid() {
-        return targetUid;
-    }
-
-    public void setTargetUid(Long targetUid) {
-        this.targetUid = targetUid;
-    }
-
     public Integer getHasGet() {
         return hasGet;
     }
@@ -127,11 +119,19 @@ public class DBRedEvenlopes {
         this.numed = numed;
     }
 
-    public Date getCreateTime() {
+    public long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(long createTime) {
         this.createTime = createTime;
+    }
+
+    public long getLastEditTime() {
+        return lastEditTime;
+    }
+
+    public void setLastEditTime(long lastEditTime) {
+        this.lastEditTime = lastEditTime;
     }
 }

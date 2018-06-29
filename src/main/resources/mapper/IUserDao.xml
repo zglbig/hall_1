@@ -18,6 +18,7 @@
         <result column="create_time" property="createTime"/>
         <result column="last_edit_time" property="lastEditTime"/>
         <result column="generalize_uid" property="generalizeUid"/>
+        <result column="friend_red_envelopes" property="friendRedEnvelopes"/>
     </resultMap>
 
     <update id="updateDBUser" parameterType="org.zgl.dao.entity.DBUser">
@@ -36,31 +37,32 @@
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="generalizeUid != null">generalize_uid = #{generalizeUid},</if>
             <if test="lastEditTime != null">last_edit_time = #{lastEditTime}</if>
+            <if test="friendRedEnvelopes != null">friend_red_envelopes = #{friendRedEnvelopes}</if>
         </set>
         where id=#{id}
     </update>
 
     <insert id="insertDBUser" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into db_user(account,password,user_name,base_info,sign_in,weath,friends,gift_bag,task,generalize_uid,create_time,last_edit_time)
-       values (#{account},#{password},#{userName},#{baseInfo},#{signIn},#{weath},#{friends},#{giftBag},#{task},#{generalizeUid},#{createTime},#{lastEditTime});
+        insert into db_user(account,password,user_name,base_info,sign_in,weath,friends,gift_bag,task,generalize_uid,friend_red_envelopes,create_time,last_edit_time)
+       values (#{account},#{password},#{userName},#{baseInfo},#{signIn},#{weath},#{friends},#{giftBag},#{task},#{generalizeUid},#{friendRedEnvelopes},#{createTime},#{lastEditTime});
     </insert>
     <select id="queryDBUserByAccount" resultMap="playerMap">
-        select id,uid,account,password,user_name,base_info,sign_in,weath,friends,gift_bag,task,generalize_uid,create_time,last_edit_time
+        select id,uid,account,password,user_name,base_info,sign_in,weath,friends,gift_bag,task,generalize_uid,friend_red_envelopes,create_time,last_edit_time
         from db_user
         where account=#{account}
     </select>
     <select id="queryDBUserById" resultMap="playerMap">
-        select id,uid,account,password,user_name,base_info,sign_in,weath,friends,gift_bag,task,generalize_uid,create_time,last_edit_time
+        select id,uid,account,password,user_name,base_info,sign_in,weath,friends,gift_bag,task,generalize_uid,friend_red_envelopes,create_time,last_edit_time
         from db_user
         where id=#{id}
     </select>
     <select id="queryDBUserByUid" resultMap="playerMap">
-        select id,uid,account,password,user_name,base_info,sign_in,weath,friends,gift_bag,task,generalize_uid,create_time,last_edit_time
+        select id,uid,account,password,user_name,base_info,sign_in,weath,friends,gift_bag,task,generalize_uid,friend_red_envelopes,create_time,last_edit_time
         from db_user
         where uid=#{uid}
     </select>
     <select id="queryDBUserList" resultMap="playerMap">
-        select id,uid,account,password,user_name,base_info,sign_in,weath,friends,gift_bag,task,generalize_uid,create_time,last_edit_time
+        select id,uid,account,password,user_name,base_info,sign_in,weath,friends,gift_bag,task,generalize_uid,friend_red_envelopes,create_time,last_edit_time
         from db_user
         where id >= #{id}
     </select>

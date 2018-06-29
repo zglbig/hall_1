@@ -23,7 +23,8 @@ public class IntoRoom extends OperateCommandAbstract {
         THOUSANDS_OF(5,1),
         TO_ROOM_1(6,2),
         TO_ROOM_2(7,2),
-        TO_ROOM_3(8,2);
+        TO_ROOM_3(8,2),
+        AH_ROOM(9,1);
         private int id;
         private int type;
 

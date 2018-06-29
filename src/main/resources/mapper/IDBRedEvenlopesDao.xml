@@ -2,53 +2,54 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.zgl.dao.mapper.IDBGeneralizeDao">
-    <resultMap id="redEvenlopesMap" type="org.zgl.dao.entity.DBRedEvenlopes">
+<mapper namespace="org.zgl.dao.mapper.IDBRedEvenlopesDao">
+    <resultMap id="redEvenlopesMap" type="org.zgl.redenvelope.dto.DBRedEvenlopes">
         <id column="id" property="id"/>
         <result column="uid" property="uid"/>
         <result column="head_icon" property="headIcon"/>
         <result column="user_name" property="userName"/>
         <result column="vip_lv" property="vipLv"/>
         <result column="red_evenlopes_type" property="redEvenlopesType"/>
-        <result column="target_uid" property="targetUid"/>
         <result column="has_get" property="hasGet"/>
         <result column="give_player" property="givePlayer"/>
         <result column="num" property="num"/>
         <result column="numed" property="numed"/>
-        <result column="explain" property="explain"/>
+        <result column="explainx" property="explain"/>
         <result column="residue_gold" property="residueGold"/>
         <result column="create_time" property="createTime"/>
+        <result column="last_edit_time" property="lastEditTime"/>
     </resultMap>
     <select id="queryRedEvenlopesLastId" resultMap="redEvenlopesMap">
-        select id,uid,head_icon,user_name,vip_lv,red_evenlopes_type,target_uid,has_get,give_player,num,numed,explain,residue_gold,create_time
+        select id,uid,head_icon,user_name,vip_lv,red_evenlopes_type,has_get,give_player,num,numed,explainx,residue_gold,create_time,last_edit_time
         from db_red_evenlopes
         where id=(select max(id) from db_red_evenlopes);
     </select>
     <select id="queryRedEvenlopesById" resultMap="redEvenlopesMap">
-        select id,uid,head_icon,user_name,vip_lv,red_evenlopes_type,target_uid,has_get,give_player,num,numed,explain,residue_gold,create_time
+        select id,uid,head_icon,user_name,vip_lv,red_evenlopes_type,has_get,give_player,num,numed,explainx,residue_gold,create_time,last_edit_time
         from db_red_evenlopes
-        where id=(select max(id) from db_red_evenlopes);
+        where id=#{id};
     </select>
     <select id="queryRedEvenlopesList" resultMap="redEvenlopesMap">
-        select id,uid,head_icon,user_name,vip_lv,red_evenlopes_type,target_uid,has_get,give_player,num,numed,explain,residue_gold,create_time
+        select id,uid,head_icon,user_name,vip_lv,red_evenlopes_type,has_get,give_player,num,numed,explainx,residue_gold,create_time,last_edit_time
         from db_red_evenlopes
-        where id = #{id};
+        where id >= #{id};
     </select>
-    <update id="updateRedEvenlopes" parameterType="org.zgl.dao.entity.DBRedEvenlopes">
+    <update id="updateRedEvenlopes" parameterType="org.zgl.redenvelope.dto.DBRedEvenlopes">
         update db_red_evenlopes
         <set>
-            <if test="redEvenlopesType != null">system_weath = #{systemWeath},</if>
-            <if test="targetUid != null">system_weath = #{systemWeath},</if>
-            <if test="hasGet != null">system_weath = #{systemWeath},</if>
-            <if test="givePlayer != null">system_weath = #{systemWeath},</if>
-            <if test="residue_gold != null">residue_gold = #{residueGold},</if>
-            <if test="numed != null">system_weath = #{systemWeath}</if>
+            <if test="redEvenlopesType != null">red_evenlopes_type = #{redEvenlopesType},</if>
+            <if test="hasGet != null">has_get = #{hasGet},</if>
+            <if test="givePlayer != null">give_player = #{givePlayer},</if>
+            <if test="residueGold != null">residue_gold = #{residueGold},</if>
+            <if test="numed != null">numed = #{numed},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="lastEditTime != null">last_edit_time = #{lastEditTime}</if>
         </set>
         where id=#{id}
     </update>
     <insert id="insertRedEvenlopes"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into db_red_evenlopes(uid,head_icon,user_name,vip_lv,red_evenlopes_type,target_uid,has_get,give_player,num,numed,explain,residue_gold,create_time)
-       values (#{uid},#{headIcon},#{userName},#{vipLv},#{redEvenlopesType},#{targetUid},#{hasGet},#{givePlayer},#{num},#{numed},#{explain},#{residueGold},#{createTime});
+        insert into db_red_evenlopes(uid,head_icon,user_name,vip_lv,red_evenlopes_type,has_get,give_player,num,numed,explainx,residue_gold,create_time,last_edit_time)
+       values (#{uid},#{headIcon},#{userName},#{vipLv},#{redEvenlopesType},#{hasGet},#{givePlayer},#{num},#{numed},#{explain},#{residueGold},#{createTime},#{lastEditTime});
     </insert>
     <delete id="deleteRedEvenlopes">
         delete from db_red_evenlopes where id=#{id}

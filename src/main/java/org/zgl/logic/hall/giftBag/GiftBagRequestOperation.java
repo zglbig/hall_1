@@ -26,10 +26,11 @@ public class GiftBagRequestOperation extends OperateCommandAbstract {
         if(userMap == null)
             new GenaryAppError(AppErrorCode.ACCOUNT_NOT_LOGIN_ERROR);
         SQLGiftBagModel giftBag = userMap.getGiftBag();
-        GiftBagAwardDataTable dataTable = GiftBagAwardDataTable.get(giftBag.getDay());
-        boolean canGet = giftBag.getPrimary() == dataTable.getPrimary()
-                && giftBag.getIntermedite() == dataTable.getIntermediate()
-                && giftBag.getAdvanced() == dataTable.getAdvanced();
+        int day = giftBag.getDay() == 0 ? 1 : giftBag.getDay();
+        GiftBagAwardDataTable dataTable = GiftBagAwardDataTable.get(day);
+        boolean canGet = giftBag.getPrimary() >= dataTable.getPrimary()
+                && giftBag.getIntermedite() >= dataTable.getIntermediate()
+                && giftBag.getAdvanced() >= dataTable.getAdvanced();
         return new GiftBagRequestDto(giftBag.isHasGet(),canGet);
     }
 }

@@ -2,6 +2,8 @@ package org.zgl.utils;
 
 import com.alibaba.fastjson.JSON;
 
+import java.util.List;
+
 public class JsonUtils {
     /**
      * 序列化：对象转成字符串
@@ -19,4 +21,12 @@ public class JsonUtils {
         T obj = JSON.parseObject(body,clazz);
         return obj;
     }
+    public static <T> List<T> jsonParseList(String body, Class<T> clazz) {
+        if (body == null || body == ""){
+            return null;
+        }
+        List<T> obj = JSON.parseArray(body, clazz);
+        return obj;
+    }
+
 }

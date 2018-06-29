@@ -16,6 +16,7 @@ public class DBUser {
 	private String giftBag;
 	private String task;
 	private Long generalizeUid;//推广人的uid
+	private String friendRedEnvelopes;
 	private Date createTime;
 	private Date lastEditTime;
 
@@ -80,6 +81,14 @@ public class DBUser {
 
 	public void setGeneralizeUid(Long generalizeUid) {
 		this.generalizeUid = generalizeUid;
+	}
+
+	public String getFriendRedEnvelopes() {
+		return friendRedEnvelopes;
+	}
+
+	public void setFriendRedEnvelopes(String friendRedEnvelopes) {
+		this.friendRedEnvelopes = friendRedEnvelopes;
 	}
 
 	public Long getUid() {

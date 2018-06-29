@@ -9,6 +9,7 @@ public class WeathResourceDto {
     private long diamond;
     private long integral;
     private int vipLv;
+    private long vipExp;
     public WeathResourceDto() {
     }
 
@@ -48,5 +49,13 @@ public class WeathResourceDto {
 
     public void setIntegral(long integral) {
         this.integral = integral;
+    }
+
+    public long getVipExp() {
+        return vipExp;
+    }
+
+    public void setVipExp(long vipExp) {
+        this.vipExp = vipExp;
     }
 }

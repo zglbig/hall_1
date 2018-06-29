@@ -1,16 +1,16 @@
 package org.zgl.logic.hall.onlineAward;
 
+import org.zgl.dao.entity.DBUser;
 import org.zgl.error.AppErrorCode;
 import org.zgl.error.GenaryAppError;
 import org.zgl.jetty.operation.OperateCommandAbstract;
 import org.zgl.jetty.session.SessionManager;
 import org.zgl.logic.hall.shop.ShopEnum;
-import org.zgl.logic.hall.shop.data.CommodityDataTable;
 import org.zgl.logic.hall.siginin.po.SQLSignInModel;
-import org.zgl.orm.core.Query;
-import org.zgl.orm.core.QueryFactory;
-import org.zgl.dao.entity.DBUser;
+import org.zgl.logic.hall.weath.po.SQLWeathModel;
 import org.zgl.player.UserMap;
+import org.zgl.utils.DateUtils;
+import org.zgl.utils.JsonUtils;
 import org.zgl.utils.builder_clazz.ann.Protocol;
 import org.zgl.utils.builder_clazz.excel_init_data.StaticConfigMessage;
 import org.zgl.utils.weightRandom.IWeihtRandom;
@@ -63,10 +63,8 @@ public class DialCmd extends OperateCommandAbstract {
         UserMap um = SessionManager.getSession(getAccount());
         //幸运圆盘嵌入到签到中去了
         SQLSignInModel signIn = um.getSignIn();
-        int dialNum = signIn.getDialNum();
-        if(dialNum <= 0){
-            new GenaryAppError(AppErrorCode.DIAL_AWARD_NUM_ERR);
-        }
+        if(signIn.getDialNum() <= 0)
+            new GenaryAppError(AppErrorCode.ONLINE_AWARD_NUM_ERR);
         //获取所有奖项
         Map<Serializable,Object> map = StaticConfigMessage.getInstance().getMap(DialDataTable.class);
         //权重随机并返回获奖位置
@@ -75,32 +73,45 @@ public class DialCmd extends OperateCommandAbstract {
             iWeihtRandoms.add((IWeihtRandom) iwr);
         }
         int position = WeightRandom.awardPosition(iWeihtRandoms);
-        //获取奖项位置的奖励物品
         DialDataTable dataTable = DialDataTable.get(position);
-        int awardType = dataTable.getAwardType();
-        dialNum--;
-        //如果不是获得打酱油
-        if(awardType != DialEnum.NONE.id()) {
-            //获取奖励物品对应的商城id
-            CommodityDataTable commodityDataTable = CommodityDataTable.get(dataTable.getAwardId());
-            if (commodityDataTable == null)
-                new GenaryAppError(AppErrorCode.DATA_ERR);
-            ShopEnum shopEnum = ShopEnum.getEnum(commodityDataTable.getShopId());
-            //如果是商城里有卖的东西
-            if (awardType == DialEnum.SHOP.id()) {
-                um.getWeath().addResource(shopEnum, commodityDataTable.getId(), dataTable.getCount());
-                um.updateWeath();
-            } else if (awardType == DialEnum.AGAIN.id()) {
-                //再玩dataTable.getCount()次
-                signIn.setDialNum(dialNum += dataTable.getCount());
-                um.updateWeath();
-            } else if (awardType == DialEnum.TELEPHONE_CHARGE.id()) {
-                //TODO...话费
-            } else if (awardType == DialEnum.MYSTERIOUS_GIFT_BAG.id()) {
-                //TODO...神秘大礼包
-            }
+        SQLWeathModel weath = um.getWeath();
+        ShopEnum shopEnum = ShopEnum.getEnum(dataTable.getAwardId());
+        if(dataTable.getAwardId() == 1) {
+            um.getWeath().addGoldOrDiamond(1, dataTable.getCount());
+        }else {
+            um.getWeath().addResource(shopEnum,dataTable.getAwardId(),dataTable.getCount());
         }
-        signIn.setDialNum(dialNum);
+        signIn.setDialNum(signIn.getDialNum() - 1);
+        DBUser user = new DBUser();
+        user.setId(um.getId());
+        user.setSignIn(JsonUtils.jsonSerialize(signIn));
+        user.setWeath(JsonUtils.jsonSerialize(weath));
+        um.update(user);
         return new DialDto(position,dataTable.getAwardId());
+    }
+    private void xxx(){
+//        int awardType = dataTable.getAwardType();
+//        dialNum--;
+//        //如果不是获得打酱油
+//        if(awardType != DialEnum.NONE.id()) {
+//            //获取奖励物品对应的商城id
+//            CommodityDataTable commodityDataTable = CommodityDataTable.get(dataTable.getAwardId());
+//            if (commodityDataTable == null)
+//                new GenaryAppError(AppErrorCode.DATA_ERR);
+//            ShopEnum shopEnum = ShopEnum.getEnum(commodityDataTable.getShopId());
+//            //如果是商城里有卖的东西
+//            if (awardType == DialEnum.SHOP.id()) {
+//                um.getWeath().addResource(shopEnum, commodityDataTable.getId(), dataTable.getCount());
+//                um.updateWeath();
+//            } else if (awardType == DialEnum.AGAIN.id()) {
+//                //再玩dataTable.getCount()次
+//                signIn.setDialNum(dialNum += dataTable.getCount());
+//                um.updateWeath();
+//            } else if (awardType == DialEnum.TELEPHONE_CHARGE.id()) {
+//                //TODO...话费
+//            } else if (awardType == DialEnum.MYSTERIOUS_GIFT_BAG.id()) {
+//                //TODO...神秘大礼包
+//            }
+//        }
     }
 }

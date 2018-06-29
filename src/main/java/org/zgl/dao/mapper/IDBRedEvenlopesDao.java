@@ -1,6 +1,6 @@
 package org.zgl.dao.mapper;
 
-import org.zgl.dao.entity.DBRedEvenlopes;
+import org.zgl.redenvelope.dto.DBRedEvenlopes;
 
 import java.util.List;
 

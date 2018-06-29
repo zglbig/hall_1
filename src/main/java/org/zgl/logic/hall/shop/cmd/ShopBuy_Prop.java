@@ -56,6 +56,7 @@ public class ShopBuy_Prop extends OperateCommandAbstract {
         }
         WeathResourceDto dto = new WeathResourceDto(weath.getGold(),weath.getDiamond(),weath.getIntegral());
         dto.setVipLv(weath.getVipLv());
+        dto.setVipExp(weath.getVipExp());
         return dto;
     }
 }

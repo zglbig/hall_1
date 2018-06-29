@@ -6,14 +6,18 @@ import org.zgl.jetty.operation.OperateCommandAbstract;
 import org.zgl.jetty.session.SessionManager;
 import org.zgl.logic.hall.siginin.po.SQLSignInModel;
 import org.zgl.logic.hall.weath.po.SQLWeathModel;
-import org.zgl.orm.core.Query;
-import org.zgl.orm.core.QueryFactory;
 import org.zgl.dao.entity.DBUser;
 import org.zgl.player.UserMap;
-import org.zgl.utils.DateUtils;
 import org.zgl.utils.JsonUtils;
-import org.zgl.utils.RandomUtils;
 import org.zgl.utils.builder_clazz.ann.Protocol;
+import org.zgl.utils.builder_clazz.excel_init_data.StaticConfigMessage;
+import org.zgl.utils.weightRandom.IWeihtRandom;
+import org.zgl.utils.weightRandom.WeightRandom;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Protocol("9")
 public class OnlineAwardCmd extends OperateCommandAbstract {
@@ -24,35 +28,30 @@ public class OnlineAwardCmd extends OperateCommandAbstract {
 
     @Override
     public Object execute() {
-        UserMap userMap = SessionManager.getSession(getAccount());
-        SQLSignInModel model = userMap.getSignIn();
-
-        long currentTime = DateUtils.currentTime();
-        if(model.getOnlineAwardDay() != DateUtils.currentDay()){
-            model.setOnlineAwardDay(DateUtils.currentDay());
-            model.setOnlineAwardNum(0);
+        UserMap um = SessionManager.getSession(getAccount());
+        //幸运圆盘嵌入到签到中去了
+        SQLSignInModel signIn = um.getSignIn();
+        if(!signIn.canAward())
+            new GenaryAppError(AppErrorCode.DIAL_AWARD_NUM_ERR);
+        //获取所有奖项
+        Map<Serializable,Object> map = StaticConfigMessage.getInstance().getMap(DialDataTable.class);
+        //权重随机并返回获奖位置
+        List<IWeihtRandom> iWeihtRandoms = new ArrayList<>(map.size());
+        for(Object iwr : map.values()){
+            iWeihtRandoms.add((IWeihtRandom) iwr);
         }
-        int awardCount = model.getOnlineAwardNum()+1;
-        OnlineAwardTimerDataTable onlineAwardTimerDataTable = OnlineAwardTimerDataTable.get(awardCount);
-        if(onlineAwardTimerDataTable == null && model.getOnlineAwardDay() == DateUtils.currentDay())
-            new GenaryAppError(AppErrorCode.ONLINE_AWARD_NUM_ERR);
-        int timerLimit = onlineAwardTimerDataTable.getTimer();
-        int t = (int) ((currentTime - model.getOnlineAwardTimer())/60000);
-        if(t < timerLimit)
-            new GenaryAppError(AppErrorCode.ONLINE_AWARD_TIMER_ERR);
-        int awardId = RandomUtils.randomIndex(8) + 1;
-        OnlineAwardDataTable onlineAwardDataTable = OnlineAwardDataTable.get(awardId);
-        if(onlineAwardDataTable == null)
-            new GenaryAppError(AppErrorCode.DATA_ERR);
-        SQLWeathModel weathModel = userMap.getWeath();
-        weathModel.addGoldOrDiamond(onlineAwardDataTable.getAwardId(),onlineAwardDataTable.getNum());
-        model.setOnlineAwardNum(awardCount);
-        model.setOnlineAwardTimer(currentTime);
-        DBUser user = new DBUser();
-        user.setId(userMap.getId());
-        user.setWeath(JsonUtils.jsonSerialize(weathModel));
-        user.setTask(JsonUtils.jsonSerialize(model));
-        userMap.update(user);
-        return new DialDto(awardId,awardId);
+        int position = WeightRandom.awardPosition(iWeihtRandoms);
+        //获取奖项位置的奖励物品
+        OnlineAwardDataTable dataTable = OnlineAwardDataTable.get(position);
+        signIn.addDialNum();
+        SQLWeathModel weath = um.getWeath();
+        weath.addGoldOrDiamond(1,dataTable.getNum());
+
+        DBUser dbUser = new DBUser();
+        dbUser.setId(um.getId());
+        dbUser.setSignIn(JsonUtils.jsonSerialize(signIn));
+        dbUser.setWeath(JsonUtils.jsonSerialize(weath));
+        um.update(dbUser);
+        return new DialDto(position,dataTable.getAwardId());
     }
 }

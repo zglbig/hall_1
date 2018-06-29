@@ -36,5 +36,7 @@ public class CommandCode{
 	public static final int Exchange_Info = 35;
 	public static final int Exchange_HeadIcon = 36;
 	public static final int GiftBagRequestOperation = 37;
+	public static final int OnlineAwardRequestOperation = 38;
+	public static final int PawnShopOperation = 39;
 	public static final int IntoHall = 10002;
 }

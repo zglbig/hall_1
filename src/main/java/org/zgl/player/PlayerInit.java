@@ -41,7 +41,7 @@ public final class PlayerInit {
         u.setLastEditTime(new java.sql.Date(date.getTime()));
         SQLUserBaseInfo baseInfo = new SQLUserBaseInfo(cmdBody.getLoginType(),cmdBody.getUsername(),cmdBody.getHeadIcon(),cmdBody.getGender(),"个人签名","联系方式",0,0);
         u.setBaseInfo(JsonUtils.jsonSerialize(baseInfo));
-        u.setSignIn(JsonUtils.jsonSerialize(new SQLSignInModel(0,0)));
+        u.setSignIn(JsonUtils.jsonSerialize(new SQLSignInModel()));
         u.setWeath(JsonUtils.jsonSerialize(new SQLWeathModel()));
         u.setFriends(JsonUtils.jsonSerialize(new SQLFrinedsModel()));
         u.setGiftBag(JsonUtils.jsonSerialize(new SQLGiftBagModel()));

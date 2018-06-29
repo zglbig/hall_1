@@ -16,7 +16,7 @@
 				<maxFileSize>1024MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
 			<!--只保存30天的日志-->
-			<maxHistory>30</maxHistory>
+			<maxHistory>1</maxHistory>
 		</rollingPolicy>
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %replace(%caller{1}){'\t|Caller.{1}0|\r\n', ''} - %m%n

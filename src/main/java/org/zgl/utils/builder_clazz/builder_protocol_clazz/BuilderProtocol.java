@@ -71,6 +71,7 @@ public class BuilderProtocol {
         sb1.append("public class CommandCode{\n");
 
         sb.append(BuilderAll.PATH_CNF.getOperateCommandAbstractPackage());
+        sb.append("\n");
         sb.append("public class OperateCommandRecive{\n");
         sb.append("\tprivate static OperateCommandRecive instance;\n");
         sb.append("\tpublic static OperateCommandRecive getInstance(){\n");

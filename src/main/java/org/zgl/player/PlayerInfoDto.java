@@ -1,9 +1,11 @@
 package org.zgl.player;
 
 
+import org.zgl.logic.hall.siginin.po.SQLSignInModel;
 import org.zgl.logic.hall.weath.po.ResourceModel;
 import org.zgl.logic.hall.weath.po.SQLWeathModel;
 import org.zgl.logic.login.po.SQLUserBaseInfo;
+import org.zgl.utils.DateUtils;
 
 import java.util.List;
 
@@ -45,6 +47,10 @@ public class PlayerInfoDto implements IPlayer {
      * 人品值
      */
     private long characterNum;
+    /**在万人 天天 骰子场今天分别总的投了多少 在返利轮盘中使用*/
+    private long toRoomBetAllNum;
+    private long ahRoomBetAllNum;
+    private long diceRoomBetAllNum;
     public PlayerInfoDto() {
     }
 
@@ -99,6 +105,11 @@ public class PlayerInfoDto implements IPlayer {
         weath.setGifts(this.gifts);
         weath.setIntegral(this.integral);
         weath.setProps(this.props);
+        SQLSignInModel signIn = userMap.getSignIn();
+        signIn.setRoomTime(DateUtils.currentDay());
+        signIn.addAhRoomBetAllNum(this.ahRoomBetAllNum);
+        signIn.addToRoomBetAllNum(this.toRoomBetAllNum);
+        signIn.addDiceRoomBetAllNum(this.diceRoomBetAllNum);
     }
     public int getId() {
         return id;
@@ -118,6 +129,30 @@ public class PlayerInfoDto implements IPlayer {
 
     public long getUid() {
         return uid;
+    }
+
+    public long getToRoomBetAllNum() {
+        return toRoomBetAllNum;
+    }
+
+    public void setToRoomBetAllNum(long toRoomBetAllNum) {
+        this.toRoomBetAllNum = toRoomBetAllNum;
+    }
+
+    public long getAhRoomBetAllNum() {
+        return ahRoomBetAllNum;
+    }
+
+    public void setAhRoomBetAllNum(long ahRoomBetAllNum) {
+        this.ahRoomBetAllNum = ahRoomBetAllNum;
+    }
+
+    public long getDiceRoomBetAllNum() {
+        return diceRoomBetAllNum;
+    }
+
+    public void setDiceRoomBetAllNum(long diceRoomBetAllNum) {
+        this.diceRoomBetAllNum = diceRoomBetAllNum;
     }
 
     public void setUid(long uid) {

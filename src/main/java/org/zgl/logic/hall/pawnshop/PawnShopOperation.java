@@ -8,6 +8,7 @@ import org.zgl.logic.hall.shop.data.CommodityDataTable;
 import org.zgl.logic.hall.weath.po.ResourceModel;
 import org.zgl.logic.hall.weath.po.SQLWeathModel;
 import org.zgl.player.UserMap;
+import org.zgl.utils.builder_clazz.ann.Protocol;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @创建时间： 2018/6/23
  * @文件描述：
  */
+@Protocol("39")
 public class PawnShopOperation extends OperateCommandAbstract {
     private final int giftId;
     public PawnShopOperation(long uid,int giftId) {

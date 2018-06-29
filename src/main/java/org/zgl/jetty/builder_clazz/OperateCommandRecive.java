@@ -35,8 +35,11 @@ import org.zgl.generalize.GenreralizeAwardOperation;
 import org.zgl.logic.hall.exchangeinfo.cmd.Exchange_Info;
 import org.zgl.logic.hall.exchangeinfo.cmd.Exchange_HeadIcon;
 import org.zgl.logic.hall.giftBag.GiftBagRequestOperation;
+import org.zgl.logic.hall.onlineAward.OnlineAwardRequestOperation;
+import org.zgl.logic.hall.pawnshop.PawnShopOperation;
 import org.zgl.logic.room_connection.IntoHall;
-import org.zgl.jetty.operation.OperateCommandAbstract;public class OperateCommandRecive{
+import org.zgl.jetty.operation.OperateCommandAbstract;
+public class OperateCommandRecive{
 	private static OperateCommandRecive instance;
 	public static OperateCommandRecive getInstance(){
 		if(instance == null)
@@ -117,6 +120,10 @@ import org.zgl.jetty.operation.OperateCommandAbstract;public class OperateComman
 				return getExchange_HeadIcon(params);
 			case 37:
 				return getGiftBagRequestOperation(params);
+			case 38:
+				return getOnlineAwardRequestOperation(params);
+			case 39:
+				return getPawnShopOperation(params);
 			case 10002:
 				return getIntoHall(params);
 			default:
@@ -302,6 +309,15 @@ import org.zgl.jetty.operation.OperateCommandAbstract;public class OperateComman
 	private OperateCommandAbstract getGiftBagRequestOperation(String[] params){
 		long value0 = Long.parseLong(params[0]);
 		return new GiftBagRequestOperation(value0);
+	}
+	private OperateCommandAbstract getOnlineAwardRequestOperation(String[] params){
+		long value0 = Long.parseLong(params[0]);
+		return new OnlineAwardRequestOperation(value0);
+	}
+	private OperateCommandAbstract getPawnShopOperation(String[] params){
+		long value0 = Long.parseLong(params[0]);
+		int value1 = Integer.parseInt(params[1]);
+		return new PawnShopOperation(value0,value1);
 	}
 	private OperateCommandAbstract getIntoHall(String[] params){
 		long value0 = Long.parseLong(params[0]);

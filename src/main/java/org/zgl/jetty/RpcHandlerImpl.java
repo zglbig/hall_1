@@ -94,10 +94,15 @@ public class RpcHandlerImpl {
             if (o == null){
                 new GenaryAppError(AppErrorCode.DATA_ERR);
             }
-            byte[] buf1 = ProtostuffUtils.serializer(o);
+
             dos.writeInt(-777888);
             dos.writeShort(-200);
-            dos.write(buf1);
+            if(o.getClass().isPrimitive() || check(o.getClass())){
+                checkType(o.getClass(),o,dos);
+            }else {
+                byte[] buf1 = ProtostuffUtils.serializer(o);
+                dos.write(buf1);
+            }
             httpServletResponse.getOutputStream().flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,5 +112,58 @@ public class RpcHandlerImpl {
     public static void main(String[] args) {
         RpcHandlerImpl f = new RpcHandlerImpl();
         System.out.println("xxx");
+    }
+    private void checkType(Class<?> clazz,Object o,DataOutputStream dos) throws IOException {
+        if(clazz.equals(short.class))
+            dos.writeShort((short) o);
+        else if(clazz.equals(byte.class))
+            dos.writeByte((int) o);
+        else if(clazz.equals(char.class))
+            dos.writeChar((int) o);
+        else if(clazz.equals(boolean.class))
+            dos.writeBoolean((boolean) o);
+        else if(clazz.equals(int.class))
+            dos.writeInt((int) o);
+        else if(clazz.equals(long.class))
+            dos.writeLong((long) o);
+        else if(clazz.equals(float.class))
+            dos.writeFloat((float) o);
+        else if(clazz.equals(double.class))
+            dos.writeDouble((double) o);
+        else if(clazz.equals(Short.class))
+            dos.writeShort((short) o);
+        else if(clazz.equals(Byte.class))
+            dos.writeByte((int) o);
+        else if(clazz.equals(Character.class))
+            dos.writeChar((int) o);
+        else if(clazz.equals(Boolean.class))
+            dos.writeBoolean((boolean) o);
+        else if(clazz.equals(Integer.class))
+            dos.writeInt((int) o);
+        else if(clazz.equals(Long.class))
+            dos.writeLong((long) o);
+        else if(clazz.equals(Float.class))
+            dos.writeFloat((float) o);
+        else if(clazz.equals(Double.class))
+            dos.writeDouble((double) o);
+    }
+    private boolean check(Class<?> clazz){
+        if(clazz.equals(Short.class))
+            return true;
+        else if(clazz.equals(Byte.class))
+            return true;
+        else if(clazz.equals(Character.class))
+            return true;
+        else if(clazz.equals(Boolean.class))
+            return true;
+        else if(clazz.equals(Integer.class))
+            return true;
+        else if(clazz.equals(Long.class))
+            return true;
+        else if(clazz.equals(Float.class))
+            return true;
+        else if(clazz.equals(Double.class))
+            return true;
+        return false;
     }
 }

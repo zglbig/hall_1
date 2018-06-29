@@ -12,6 +12,7 @@ import org.zgl.logic.login.po.SQLUserBaseInfo;
 import org.zgl.orm.core.Query;
 import org.zgl.orm.core.QueryFactory;
 import org.zgl.dao.entity.DBUser;
+import org.zgl.redenvelope.dto.FriendRedEnvelopesDto;
 import org.zgl.utils.DateUtils;
 import org.zgl.utils.JsonUtils;
 import org.zgl.utils.SpringUtils;
@@ -35,6 +36,7 @@ public class UserMap {
     private SQLTaskModel task;
     private long loginTime;
     private Worker worker;
+    private List<FriendRedEnvelopesDto> friendRedEnvelopes;
     public UserMap() {
     }
 
@@ -92,6 +94,14 @@ public class UserMap {
 
     public void setSignIn(SQLSignInModel signIn) {
         this.signIn = signIn;
+    }
+
+    public List<FriendRedEnvelopesDto> getFriendRedEnvelopes() {
+        return friendRedEnvelopes;
+    }
+
+    public void setFriendRedEnvelopes(List<FriendRedEnvelopesDto> friendRedEnvelopes) {
+        this.friendRedEnvelopes = friendRedEnvelopes;
     }
 
     public SQLWeathModel getWeath() {
@@ -193,6 +203,7 @@ public class UserMap {
         u.setSignIn(JsonUtils.jsonSerialize(signIn));
         u.setGiftBag(JsonUtils.jsonSerialize(giftBag));
         u.setTask(JsonUtils.jsonSerialize(task));
+        u.setFriendRedEnvelopes(JsonUtils.jsonSerialize(friendRedEnvelopes));
         return u;
     }
 
@@ -215,6 +226,7 @@ public class UserMap {
         this.giftBag = JsonUtils.jsonDeserialization(u.getGiftBag(),SQLGiftBagModel.class);
         this.task = JsonUtils.jsonDeserialization(u.getTask(),SQLTaskModel.class);
         this.loginTime = DateUtils.currentTime();
+        this.friendRedEnvelopes = JsonUtils.jsonParseList(u.getFriendRedEnvelopes(),FriendRedEnvelopesDto.class);
         checkAutos();
         return this;
     }

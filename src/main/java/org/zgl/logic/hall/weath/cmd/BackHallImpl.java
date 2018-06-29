@@ -1,6 +1,7 @@
 package org.zgl.logic.hall.weath.cmd;
 
 import org.zgl.dao.entity.DBGeneralize;
+import org.zgl.dao.entity.DBUser;
 import org.zgl.dao.mapper.IDBGeneralizeDao;
 import org.zgl.error.AppErrorCode;
 import org.zgl.error.GenaryAppError;
@@ -13,6 +14,7 @@ import org.zgl.player.PlayerInfoDto;
 import org.zgl.player.UserMap;
 import org.zgl.remote.IBackHall;
 import org.zgl.remote.IProxy;
+import org.zgl.utils.JsonUtils;
 import org.zgl.utils.SpringUtils;
 import org.zgl.utils.logger.LoggerUtils;
 
@@ -38,8 +40,14 @@ public class BackHallImpl implements IBackHall {
             }
             r.infoToWeath(userMap);
             weathModel.updateResource(r.getGold(),r.getDiamond(),r.getIntegral());
+            userMap.setScenesId(r.getScenesId());
             GiftBagManager.getInstance().executeTask(userMap);//成长礼包
-            userMap.updateWeath();
+
+            DBUser dbUser = new DBUser();
+            dbUser.setId(r.getId());
+            dbUser.setWeath(JsonUtils.jsonSerialize(userMap.getWeath()));
+            dbUser.setSignIn(JsonUtils.jsonSerialize(userMap.getSignIn()));
+            userMap.update(dbUser);
         }
         return 200;
     }

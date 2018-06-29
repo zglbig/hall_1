@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @作者： big
@@ -39,13 +38,13 @@ public class JettyHandlerImpl {
             if (buf.length > 0) {
                 Msg msg = ProtostuffUtils.deserializer(buf, Msg.class);
                 if (msg.getMsg() != null && !msg.getMsg().equals("")) {
-                    if(id == 10001){
-                        String account = StringUtils.substringAfterLast(msg.getMsg(),",");
-                        String param = StringUtils.substringBeforeLast(msg.getMsg(),",");
-                        params = new String[]{param,account};
-                    }else {
-                        params = StringUtils.split(msg.getMsg(), ",");
-                    }
+//                    if(id == 10001){
+//                        String account = StringUtils.substringAfterLast(msg.getMsg(),",");
+//                        String param = StringUtils.substringBeforeLast(msg.getMsg(),",");
+//                        params = new String[]{param,account};
+//                    }else {
+                    params = StringUtils.split(msg.getMsg(), ",");
+//                    }
                 }
             }
             OperateCommandAbstract op = OperateCommandRecive.getInstance().recieve(id, params);

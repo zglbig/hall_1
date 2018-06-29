@@ -8,12 +8,12 @@ import org.zgl.utils.builder_clazz.excel_init_data.StaticConfigMessage;
 public class SignInDataTable implements DataTableMessage {
     private final int id;
     private final long gold;
-    private final long diamond;
+    private final int changeCard;
 
     public SignInDataTable() {
         id = 0;
         gold = 0L;
-        diamond = 0L;
+        changeCard = 0;
     }
     public static SignInDataTable get(int id){
         return StaticConfigMessage.getInstance().get(SignInDataTable.class,id);
@@ -26,8 +26,8 @@ public class SignInDataTable implements DataTableMessage {
         return gold;
     }
 
-    public long getDiamond() {
-        return diamond;
+    public int getChangeCard() {
+        return changeCard;
     }
 
     @Override

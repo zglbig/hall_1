@@ -58,7 +58,7 @@ public final class AppErrorCode{
     public final static int ONLINE_AWARD_TIMER_ERR = 309;
     @ExcelValue(value = "今天的抽奖次数已经用完了哟，明天再来吧!")
     public final static int ONLINE_AWARD_NUM_ERR = 310;
-    @ExcelValue(value = "亲，金币3万以上才能参与抽奖哟，请充值后再来!")
+    @ExcelValue(value = "亲，您现在还不能领取奖励 先去场里逛逛吧!")
     public final static int DIAL_AWARD_NUM_ERR = 311;
     @ExcelValue(value = "当前还没购买该座驾，无法使用!")
     public final static int NOT_AUTO_ERR = 312;

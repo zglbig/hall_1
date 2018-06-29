@@ -94,7 +94,7 @@ public class BuilderProtostuff {
             if(i<s.size()-2)
                 sb.append("\t[ProtoMember("+(i+1)+")]"+"\n");
         }
-        WriteFile.writeText(beanName+".cs",sb.toString(),BuilderAll.PATH_CNF.getCsPath());
+        WriteFile.writeText(beanName+".cs",sb.toString(),BuilderAll.PATH_CNF.getDtoCsPath());
     }
 
 }

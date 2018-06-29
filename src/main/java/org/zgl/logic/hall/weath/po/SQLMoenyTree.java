@@ -11,12 +11,21 @@ public class SQLMoenyTree {
     private long timer;
     /**摇钱树等级 等级大于0说明已经购买*/
     private int lv;
+    private boolean hasBuy;
     public SQLMoenyTree() {
     }
 
     public SQLMoenyTree(long timer, int lv) {
         this.timer = timer;
         this.lv = lv;
+    }
+
+    public boolean isHasBuy() {
+        return hasBuy;
+    }
+
+    public void setHasBuy(boolean hasBuy) {
+        this.hasBuy = hasBuy;
     }
 
     public long getTimer() {

@@ -6,6 +6,7 @@ import org.zgl.logic.hall.giftBag.data.GiftBagAwardDataTable;
 import org.zgl.logic.hall.giftBag.data.GiftBagAwardModel;
 import org.zgl.logic.hall.giftBag.po.SQLGiftBagModel;
 import org.zgl.logic.hall.shop.ShopEnum;
+import org.zgl.logic.hall.siginin.po.SQLSignInModel;
 import org.zgl.logic.hall.weath.po.SQLWeathModel;
 import org.zgl.logic.room_connection.IntoRoom;
 import org.zgl.dao.entity.DBUser;
@@ -68,22 +69,23 @@ public class GiftBagManager {
             giftBagModel.setIntermedite(0);
         }
         IntoRoom.ScenesEnum scenesEnum = IntoRoom.ScenesEnum.get(um.getScenesId());
-        boolean isUpdate = false;
+        boolean isGiftUpdate = false;
         switch (scenesEnum) {
             case ROOM_FIRST:
                 giftBagModel.setPrimary(giftBagModel.getPrimary() + 1);
-                isUpdate = true;
+                isGiftUpdate = true;
                 break;
             case ROOM_TWO:
                 giftBagModel.setIntermedite(giftBagModel.getIntermedite() + 1);
-                isUpdate = true;
+                isGiftUpdate = true;
                 break;
             case ROOM_LAST:
                 giftBagModel.setAdvanced(giftBagModel.getAdvanced() + 1);
-                isUpdate = true;
+                isGiftUpdate = true;
                 break;
         }
-        if(!isUpdate)
+
+        if(!isGiftUpdate)
             return;
         DBUser user = new DBUser();
         user.setId(um.getId());
@@ -94,6 +96,4 @@ public class GiftBagManager {
     /**
      * 检查是否完成任务
      */
-    private void checkTack() {
-    }
 }

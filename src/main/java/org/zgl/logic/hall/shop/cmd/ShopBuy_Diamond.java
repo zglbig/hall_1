@@ -1,12 +1,16 @@
 package org.zgl.logic.hall.shop.cmd;
 
+import org.zgl.dao.entity.DBUser;
 import org.zgl.error.LogAppError;
 import org.zgl.jetty.operation.OperateCommandAbstract;
 import org.zgl.jetty.session.SessionManager;
 import org.zgl.logic.hall.shop.data.CommodityDataTable;
+import org.zgl.logic.hall.siginin.po.SQLSignInModel;
 import org.zgl.logic.hall.weath.dto.WeathResourceDto;
 import org.zgl.logic.hall.weath.po.SQLWeathModel;
 import org.zgl.player.UserMap;
+import org.zgl.utils.DateUtils;
+import org.zgl.utils.JsonUtils;
 import org.zgl.utils.builder_clazz.ann.Protocol;
 
 /**
@@ -34,7 +38,15 @@ public class ShopBuy_Diamond extends OperateCommandAbstract {
 
         weath.addGoldOrDiamond(48,dataTable.getCount());
         weath.addIntegral(dataTable.getIntegral());
-        userMap.updateWeath();
+        SQLSignInModel signIn = userMap.getSignIn();
+        signIn.setRoomTime(DateUtils.currentDay());
+        signIn.addTopUpNum(dataTable.getCount());
+        DBUser dbUser = new DBUser();
+        dbUser.setId(userMap.getId());
+        dbUser.setWeath(JsonUtils.jsonSerialize(userMap.getWeath()));
+        dbUser.setSignIn(JsonUtils.jsonSerialize(userMap.getSignIn()));//今天累计充值
+        userMap.update(dbUser);
+        userMap.update(dbUser);
         return new WeathResourceDto(weath.getGold(),weath.getDiamond(),weath.getIntegral());
     }
 }

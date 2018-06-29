@@ -11,8 +11,10 @@ import org.zgl.logic.hall.shop.data.CommodityDataTable;
 import org.zgl.logic.hall.task.manager.TaskManager;
 import org.zgl.logic.hall.vip.dto.VIPDto;
 import org.zgl.logic.hall.vip.po.VipDataTable;
+import org.zgl.logic.hall.weath.po.SQLMoenyTree;
 import org.zgl.logic.hall.weath.po.SQLWeathModel;
 import org.zgl.player.UserMap;
+import org.zgl.utils.DateUtils;
 import org.zgl.utils.JsonUtils;
 import org.zgl.utils.builder_clazz.ann.Protocol;
 
@@ -41,6 +43,13 @@ public class ShopBuy_Vip extends OperateCommandAbstract {
         if(vipDataTable != null){
             frintCount = vipDataTable.getFriendCount();
         }
+        //给摇钱树
+        SQLWeathModel weath = userMap.getWeath();
+        if(!weath.getMoneyTree().isHasBuy()) {
+            moneyTree(weath);
+            TaskManager.getInstance().listener(userMap, 12);//获得摇钱树
+        }
+        weath.getMoneyTree().setLv(weath.getVipLv());
         frineds.setCountLimit(frintCount);
         DBUser dbUser = new DBUser();
         dbUser.setId(userMap.getId());
@@ -49,6 +58,16 @@ public class ShopBuy_Vip extends OperateCommandAbstract {
         userMap.update(dbUser);
         TaskManager.getInstance().listener(userMap,10);//vip勋章
         return o;
+    }
+    /**
+     * 购买摇钱树
+     */
+    private void moneyTree(SQLWeathModel weath){
+        SQLMoenyTree moenyTree = weath.getMoneyTree();
+        moenyTree.setLv(weath.getVipLv());
+        moenyTree.setHasBuy(true);
+        moenyTree.setTimer(DateUtils.currentTime());
+//        DateUtils
     }
     /**
      * 购买vip

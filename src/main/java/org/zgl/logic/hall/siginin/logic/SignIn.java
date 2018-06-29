@@ -6,6 +6,7 @@ import org.zgl.error.AppErrorCode;
 import org.zgl.error.GenaryAppError;
 import org.zgl.jetty.operation.OperateCommandAbstract;
 import org.zgl.jetty.session.SessionManager;
+import org.zgl.logic.hall.shop.ShopEnum;
 import org.zgl.logic.hall.siginin.data.SignInDataTable;
 import org.zgl.logic.hall.siginin.po.SQLSignInModel;
 import org.zgl.logic.hall.vip.po.VipDataTable;
@@ -33,8 +34,11 @@ public class SignIn extends OperateCommandAbstract {
         if(model.getSignInTime() >= todayTime)
             new GenaryAppError(AppErrorCode.AWARD_GET_ERR);
         int day = model.getSignDay();
-        if(day >= 7)
+        if(todayTime - model.getSignDay() != 1){
             day = 0;
+        }
+        if(day >= 7)
+            day = 6;
         day++;
 
         SignInDataTable dataTable = SignInDataTable.get(day);
@@ -51,8 +55,8 @@ public class SignIn extends OperateCommandAbstract {
         model.setSignDay(day);
         model.setSignInTime(todayTime);
         weath.addGoldOrDiamond(1,gold+vipSignIn*gold);
-        weath.addGoldOrDiamond(48,dataTable.getDiamond());
-
+        //换牌卡
+        weath.addResource(ShopEnum.PROP,22,dataTable.getChangeCard());
         DBUser dbUser = new DBUser();
         dbUser.setId(um.getId());
         dbUser.setWeath(JsonUtils.jsonSerialize(um.getWeath()));

@@ -1,10 +1,7 @@
 package org.zgl.utils.builder_clazz.excel_data_builder_clazz;
 
 import org.zgl.utils.StringUtils;
-import org.zgl.utils.builder_clazz.PublicPackage.CheckType;
-import org.zgl.utils.builder_clazz.PublicPackage.CodeModel;
-import org.zgl.utils.builder_clazz.PublicPackage.GetFileAllInit;
-import org.zgl.utils.builder_clazz.PublicPackage.WriteFile;
+import org.zgl.utils.builder_clazz.PublicPackage.*;
 import org.zgl.utils.builder_clazz.ann.DataTable;
 import org.zgl.utils.builder_clazz.ann.OverlookField;
 
@@ -95,6 +92,6 @@ public class BuilderExcel {
         for (String str:s){
             sb.append(str);
         }
-        WriteFile.writeText(beanName+".cs",sb.toString(),"E:\\cs");
+        WriteFile.writeText(beanName+".cs",sb.toString(),BuilderAll.PATH_CNF.getDatableCsBuildPath());
     }
 }

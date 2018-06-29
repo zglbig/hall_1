@@ -73,4 +73,12 @@ public class SessionManager {
         t.setDaemon(true);//设置为守护线程
         t.start();
     }
+    public void remove(){
+        Set<Long> accounts = new HashSet<>();
+        for(Map.Entry<Long,UserMap> e : onlineSessions.entrySet()){
+            if(DateUtils.currentDay() - e.getValue().getLoginTime() >= 1800000){
+                accounts.add(e.getKey());
+            }
+        }
+    }
 }

@@ -3,9 +3,10 @@ package org.zgl.logic.hall.onlineAward;
 import org.zgl.utils.builder_clazz.ann.DataTable;
 import org.zgl.utils.builder_clazz.excel_init_data.DataTableMessage;
 import org.zgl.utils.builder_clazz.excel_init_data.StaticConfigMessage;
+import org.zgl.utils.weightRandom.IWeihtRandom;
 
 @DataTable
-public class OnlineAwardDataTable implements DataTableMessage {
+public class OnlineAwardDataTable implements DataTableMessage  {
     private final int id;
     private final int awardId;
     private final int num;
@@ -38,4 +39,5 @@ public class OnlineAwardDataTable implements DataTableMessage {
     public void AfterInit() {
 
     }
+
 }

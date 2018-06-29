@@ -1,6 +1,8 @@
 package org.zgl.remote;
 
-import org.zgl.dao.entity.DBRedEvenlopes;
+import org.zgl.redenvelope.dto.DBRedEvenlopes;
+import org.zgl.redenvelope.dto.FriendRedEnvelopesDto;
+import org.zgl.redenvelope.dto.RedEnvelopesDto;
 
 import java.util.List;
 
@@ -14,6 +16,9 @@ public interface IRedEvenlopes {
     int updateRedEvenlopes(DBRedEvenlopes evenlopes);
     DBRedEvenlopes queryRedEvenlopesById(Integer id);
     DBRedEvenlopes queryRedEvenlopesLastId();
-    List<DBRedEvenlopes> queryRedEvenlopesList(Integer id);
+    RedEnvelopesDto queryRedEvenlopesList(Integer id);
     int deleteRedEvenlopes(Integer id);
+    int handOutRedEnvelopes(Long uid,FriendRedEnvelopesDto friendRedEnvelopesDto);
+    int updateRedEnvelopes(Long uid,Integer id);
+    List<FriendRedEnvelopesDto> friendRedEnvelopesList(Long uid);
 }
